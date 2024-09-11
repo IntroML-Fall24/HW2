@@ -1,0 +1,78 @@
+---
+title: "HW 02:  Linear Regression"
+author: "Student Name"
+date: "Today's Date"
+output:
+  html_document:
+    theme: cerulean
+---
+
+Instructions:  Answer all questions in this `.Rmd` file.  Be sure to knit, commit and push the final versions of your `.Rmd` and `.html` files.
+
+Note:  Using the `step()` function from the `stats` package can cause conflicts with the `tidyverse` package.  If using the `step()` function to do either backward or forward elimination, clarify the function with its package name to be safe:  `stats::step()`.
+
+### Part 1:  Predicting Software Reselling Profits
+
+Tayko Software is a software catalog firm that sells games and educational software.  It started out as a software manufacturer and then added third-party titles to it offerings.  It recently revised its collection of items in a new catalog, which it mailed out to it customers.  This mailing yielded 2000 purchases.  Based on these data, Tayko wants to devise a model for predicting the spending amount that a purchasing customer will yield.  The dataset `Tayko.csv` contains information on 2000 purchases.  The table below describes the variables to be used in this exercise (the `csv` file contains additional variables, and some variable names my differ slightly from the table below).  
+
+| Variable                      |  Description
+|:----------------|:--------------------------------
+|`FREQ`                         | Number of transactions in the preceding year
+|`LAST_UPDATE`                  | Number of days since last update to customer record
+|`WEB`                          | Whether customer purchased by Web order at least once
+|`GENDER`                       | Male or female
+|`ADDRESS_RES`                  | Whether it is a residential address
+|`ADDRESS_US`                   | Whether it is a US address
+|`SPENDING` (response)          | Amount spent by customer in test mailing (in dollars)
+
+**Before answering the questions below, you should create a code chunk for reading in libraries, read in the data using `read_csv`, and clean up the variable names if necessary.  You should also convert any variables that should be categorical but are read in as numeric.**
+
+1.  Using `tidyverse` functions, create tables of means and standard deviations for the response variable `SPENDING` for different values of each categorical variable.  What do the results tell us?
+
+2.  Explore the relationship between `SPENDING` and each of the two continuous predictors using visualizations.  What can you conclude from your visualizations?
+
+3.  Fit a linear regression model to predict spending using all 6 predictor variables in the table above.  Be sure to include the following steps:  (i) partition your data into training and testing sets; use seed 4321 and a 70%-30% split; (ii) state the estimated model; (iii) based on your model, which type of purchaser is most likely to spend a large amount of money?  
+4. Use backward elimination to reduce the number of predictors. Which predictor is dropped first from the model?  Is it surprising?  State your final model after backward elimination.
+
+5.  Using the model from Question 4, compute the predicted value and the residual for the first observation in the test set using R code.
+
+6.  Evaluate the predictive accuracy for your model from Question 4 by examining its performance on the test data.
+
+7.  Create a residual plot for your model from Question 4 and evaluate the normality of the residuals.  Comment on what you find.  Do these findings affect the predictive performance of your model?
+
+### Part 2:  The Collinearity Problem
+
+8.  Execute the code below.  The last line corresponds to creating a linear model in which `y` is a function of `x1` and `x2`.  Write out the form of the linear model.  What are the regression coefficients?
+
+```{r}
+set.seed(1)
+x1 = runif(100)
+x2 = 0.5 * x1 + rnorm(100)/10
+y = 2 + 2 * x1 + 0.3 * x2 + rnorm(100)
+```
+
+9.  What is the correlation between `x1` and `x2`?  Create a scatterplot displaying the relationship between the variables.
+
+10.  Using this data, fit a least squares regression model to predict `y` using `x1` and `x2`.  Describe the results obtained.  What are the coefficient estimates?  How do these relate to the true values of the coefficients?  Can you reject the null hypothesis $H_0:  \beta_1 = 0$?  How about the null hypothesis $H_0: \beta_2 = 0$?
+
+11.  Now fit a least squares regression model to predict `y` using only `x1`.  Comment on your results.  Can you reject the null hypothesis $H_0:  \beta_1 = 0$?
+
+12.  Now fit a least squares regression model to predict `y` using only `x2`.  Comment on your results.  Can you reject the null hypothesis $H_0:  \beta_2 = 0$?
+
+13.  Do the results obtained in Questions 10, 11, and 12 contradict each other?  Explain your answer.
+
+14.  Now suppose we obtain one additional observation, which was unfortunately mis-measured.
+
+```{r}
+x1 = c(x1, 0.1)
+x2 = c(x2, 0.8)
+y = c(y, 6)
+```
+
+Re-fit the linear models in Questions 10, 11, and 12 using this new data.  What effect does this new observation have on each of the models?  In each model, is this observation an outlier?  A high-leverage point?  Both?  Explain your answers.  It may be useful to also include a scatterplot of `x1` versus `x2`.
+
+
+
+
+
+
